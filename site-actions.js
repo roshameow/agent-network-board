@@ -51,8 +51,12 @@ function deriveSiteBase(input) {
   }
   const base = `${url.origin}${pathname === "/" ? "/" : pathname}`;
   const requested = (() => {
-    try { return new URL(input).pathname.split("/").filter(Boolean).pop() || ""; }
-    catch { return ""; }
+    try {
+      const parsed = new URL(input);
+      if (parsed.pathname.endsWith("/")) return "";
+      if (/agent-manifest\.json$|\.network\.json$|\.hocon$/i.test(parsed.pathname)) return "";
+      return parsed.pathname.split("/").filter(Boolean).pop() || "";
+    } catch { return ""; }
   })();
   return { base: base.replace(/\/$/, ""), requested };
 }
@@ -400,7 +404,8 @@ export function registerActions(actions) {
         const values = [e.origin, e.peerOrigin, ...(Array.isArray(e.fetchedUrls) ? e.fetchedUrls : [])];
         return values.map(v => { try { return new URL(v).origin; } catch { return null; } }).filter(Boolean);
       }))];
-      const consent = events.filter(e => e.kind === "consent" || e.decision);
+      const consent = events.filter(e => e.kind === "consent" || e.decision)
+        .concat((state.events || []).filter(e => e.type === "consent").map(e => ({ peerOrigin: e.peerOrigin, decision: e.decision, kind: "board-consent" })));
       const keyLeakSignals = events.filter(e => /sk-|bearer|api[_-]?key/i.test(redact(e)) && !/\[redacted\]|not shown/i.test(redact(e)));
       const result = {
         status: "succeeded",

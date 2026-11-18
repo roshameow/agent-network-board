@@ -124,7 +124,8 @@ function evidenceChecks() {
   const n = state.inspection;
   const v = state.verification;
   const events = traceEvents();
-  const consent = events.filter(e => e.kind === "consent" && e.decision);
+  const consent = events.filter(e => e.kind === "consent" && e.decision)
+    .concat(state.events.filter(e => e.type === "consent" && e.decision));
   const remote = events.filter(e => e.kind === "remote_call");
   const keySignal = events.some(e => /sk-[A-Za-z0-9]{8,}|Bearer\s+[A-Za-z0-9]/i.test(redactedText(JSON.stringify(e))));
   const privateLeak = remote.some(e => JSON.stringify(e.requestPayload || {}).includes("DO_NOT_FORWARD"));
@@ -235,6 +236,13 @@ async function bootBoard() {
     const referenceConsent = engine.onConsent;
     engine.onConsent = async (info) => {
       const decision = await askConsent(info);
+      state.events.push({
+        type: "consent",
+        at: new Date().toISOString(),
+        peerOrigin: info.peerOrigin,
+        decision: decision === "decline" ? "declined" : "approved",
+        kind: info.kind,
+      });
       if (decision === "always") {
         engine.consent.set(info.peerOrigin, "always");
         return "allow";

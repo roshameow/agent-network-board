@@ -48,7 +48,7 @@ Agents in the local network:
 - `handoff_planner` — writes a reviewable handoff proposal with exact origin and policy.
 - `evidence_auditor` — reads a redacted view of real runtime trace events.
 
-The peer network has `receipt_notary` and `digest_checker`, plus a bridge-exposed read action that checks SHA-256 digest syntax.
+The peer network has `receipt_notary` and `digest_checker`. Its own read action checks SHA-256 digest syntax when the peer site is opened directly; cross-origin composition uses only the declarative peer graph, as required by the MVP boundary.
 
 ## Run locally
 
