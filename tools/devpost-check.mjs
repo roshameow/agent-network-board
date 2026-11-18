@@ -1,0 +1,12 @@
+import { CDP } from './cdp.mjs';
+const tab = await CDP.newTab(9236, 'about:blank');
+const c = await new CDP(tab.webSocketDebuggerUrl, {timeout:60000}).connect();
+await c.send('Page.enable');
+await c.send('Network.enable');
+await c.send('Network.setCacheDisabled',{cacheDisabled:true});
+await c.send('Page.navigate',{url:'https://devpost.com/submit-to/32026-open-agentic-web-challenge/manage/submissions'});
+await new Promise(r=>setTimeout(r,5000));
+console.log('url', await c.evaluate('location.href'));
+console.log('title', await c.evaluate('document.title'));
+console.log('body', (await c.evaluate('document.body.innerText')).slice(0,2000));
+await c.close();

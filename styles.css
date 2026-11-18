@@ -100,7 +100,7 @@ button:disabled { opacity: .55; cursor: not-allowed; }
   border: 1px solid var(--line); border-radius: 12px; background: #fbfaf5;
 }
 .artifact-row strong { font-size: 13px; }
-.artifact-row .mono { color: var(--muted); font-size: 11.5px; overflow-wrap: anywhere; }
+.artifact-row .mono { grid-column: 1 / -1; color: var(--muted); font-size: 11.5px; overflow-wrap: anywhere; }
 .status-tag { font-size: 10.5px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
 .status-tag.pass, .status-tag.ok { color: var(--green-2); }
 .status-tag.fail, .status-tag.error { color: var(--red); }
