@@ -292,7 +292,7 @@ export function registerActions(actions) {
           exactNetworkName: entry.name === "agent_network_board" ? "PASS" : "FAIL",
           frontMan: entry.front_man || null,
           frontManFound: frontFound ? "PASS" : "FAIL",
-          dataOnly: "${" in JSON.stringify(network) || /include\s+"/.test(JSON.stringify(network)) ? "FAIL" : "PASS",
+          dataOnly: JSON.stringify(network).includes("${") || /include\s+"/.test(JSON.stringify(network)) ? "FAIL" : "PASS",
           keyFieldsInPublicFiles: /api[_-]?key|authorization|bearer\s+[A-Za-z0-9]/i.test(JSON.stringify({ manifest, network })) ? "FAIL" : "PASS",
         };
         getState().verification = result;

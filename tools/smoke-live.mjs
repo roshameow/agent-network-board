@@ -22,6 +22,7 @@ console.log('discovery', await c.evaluate(`window.ANB_STATE.discovery?.status + 
 console.log('inspection', await c.evaluate(`window.ANB_STATE.inspection?.status + ' ' + window.ANB_STATE.inspection?.networkName`));
 console.log('peer origin trace', await c.evaluate(`JSON.stringify([...new Set(window.__nsweb.trace.events.flatMap(e=>[e.peerOrigin,e.origin].filter(Boolean)))])`));
 console.log('reasons', await c.evaluate(`JSON.stringify({d:window.ANB_STATE.discovery,i:window.ANB_STATE.inspection})`));
+console.log('verification', await c.evaluate(`JSON.stringify(window.ANB_STATE.verification)`));
 console.log('action catalog', await c.evaluate(`JSON.stringify(window.__nsweb.trace.events.filter(e=>e.kind==='action_catalog'))`));
 console.log('consent events', await c.evaluate(`JSON.stringify(window.__nsweb.trace.events.filter(e=>e.kind==='consent'||e.decision||e.peerOrigin))`));
 console.log('evidence', await c.evaluate(`JSON.stringify([...document.querySelectorAll('.evidence-row')].map(r=>r.textContent.replace(/\\s+/g,' ').trim()))`));
