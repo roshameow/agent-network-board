@@ -1,12 +1,14 @@
 import fs from "node:fs";
 import { CDP } from "./cdp.mjs";
 
-const tab = await CDP.newTab(9236, "about:blank");
+const list = await (await fetch('http://127.0.0.1:9236/json/list')).json();
+const tab = list.find(t => t.type === 'page' && t.url.startsWith('https://roshameow.github.io/agent-network-board/'));
+if (!tab) throw new Error('No existing board tab found; not opening a new one.');
 const c = await new CDP(tab.webSocketDebuggerUrl, { timeout: 60000 }).connect();
 await c.send("Page.enable");
 await c.send("Network.enable");
 await c.send("Network.setCacheDisabled", { cacheDisabled: true });
-await c.send("Page.navigate", { url: "https://roshameow.github.io/agent-network-board/" });
+await c.send("Page.reload", { ignoreCache: true });
 await c.waitFor("!!window.__anb", { timeout: 45000 });
 await c.evaluate(`document.querySelector('#task-form button[type=submit]').click()`);
 for (let i = 0; i < 360; i++) {
