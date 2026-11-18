@@ -226,7 +226,10 @@ async function runTask() {
 
 async function bootBoard() {
   try {
-    const runtime = await boot("#agent-app", { originUrl: location.origin });
+    const basePath = location.pathname.replace(/\/index\.html$/, "").replace(/\/$/, "");
+    const siteBase = `${location.origin}${basePath}`;
+    const sandboxWorkerUrl = new URL("./vendor/nsdeploy/runtime/sandbox-worker.js", location.href).href;
+    const runtime = await boot("#agent-app", { originUrl: siteBase, sandboxWorkerUrl });
     engine = runtime.engine;
     window.__anb = runtime;
     const referenceConsent = engine.onConsent;

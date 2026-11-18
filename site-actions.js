@@ -26,6 +26,11 @@ function publish(type, detail) {
   } catch { /* UI may not be mounted yet */ }
 }
 
+function siteBaseUrl() {
+  const basePath = location.pathname.replace(/\/index\.html$/, "").replace(/\/$/, "");
+  return `${location.origin}${basePath}`;
+}
+
 function extractUrl(request) {
   const text = String(request || "");
   const match = text.match(/https?:\/\/[^\s"'<>}\]]+/i);
@@ -175,7 +180,7 @@ export function registerActions(actions) {
     availability: "local-only",
     async execute({ request }) {
       try {
-        const input = extractUrl(request) || getState().discovery?.siteBase || `${location.origin}/`;
+        const input = extractUrl(request) || getState().discovery?.siteBase || `${siteBaseUrl()}/`;
         const { base, requested } = deriveSiteBase(input);
         const manifestArtifact = await fetchArtifact(`${base}/agent-manifest.json`);
         if (!manifestArtifact.ok) throw new Error(`manifest fetch ${manifestArtifact.status}`);
@@ -266,7 +271,7 @@ export function registerActions(actions) {
     availability: "local-only",
     async execute() {
       try {
-        const base = location.origin;
+        const base = siteBaseUrl();
         const files = {};
         for (const path of ["agent-manifest.json", "agent_network_board.network.json", "links.json"]) {
           const artifact = await fetchArtifact(`${base}/${path}`);
