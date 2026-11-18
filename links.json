@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "networks": {
+    "agent_network_board": {
+      "receipt_notary_peer": "https://roshameow.github.io./agent-network-board-peer/receipt_notary"
+    }
+  }
+}

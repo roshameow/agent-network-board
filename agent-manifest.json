@@ -1,0 +1,58 @@
+{
+  "brand": "Agent Network Board",
+  "networks": [
+    {
+      "name": "agent_network_board",
+      "front_man": "board_front",
+      "hocon": "./agent_network_board.network.json",
+      "description": "A verifiable control room for the open agentic web: discover published networks, inspect declared capabilities, route work through browser agents, and audit real cross-origin activity.",
+      "tags": ["agentic-website", "discovery", "trust", "audit", "browser-runtime"],
+      "sample_queries": [
+        "Inspect https://roshameow.github.io./agent-network-board-peer/receipt_notary and show what it can do.",
+        "Prepare a handoff to the receipt notary peer to verify a receipt digest and summarize the evidence.",
+        "Audit this run and show which origins were contacted."
+      ]
+    }
+  ],
+  "llm_router": {
+    "base_url": "browser://mock",
+    "mock": true,
+    "mock_router": "browser://mock",
+    "byok_router": "https://api.openai.com/v1",
+    "note": "The keyless default is an explicitly labelled deterministic inference adapter running in the visitor's browser. BYOK profiles replace it with the visitor's OpenAI-compatible router; keys are never sent to peer sites."
+  },
+  "allowed_peers": [
+    "https://roshameow.github.io",
+    "https://roshameow.github.io."
+  ],
+  "peer_policy": {
+    "mode": "open",
+    "deny_origins": [],
+    "note": "Public agent artifacts are reachable like web pages. Every third-party contact is shown in a consent card; peer manifests cannot replace the caller's router and private context is denied by default."
+  },
+  "actions": {
+    "version": 1,
+    "module": "./site-actions.js",
+    "callerOrigins": ["*"]
+  },
+  "linking": {
+    "exports": [
+      {
+        "network": "agent_network_board",
+        "aliases": ["agent_network_board", "board_front", "Agent Network Board"],
+        "description": "Inspect this site's agent network and audit a real browser run."
+      }
+    ]
+  },
+  "deployment": {
+    "mode": "static",
+    "self_contained_runtime": true,
+    "browser_mock": true,
+    "direct_byok": true,
+    "direct_mcp_requires_cors": true,
+    "public_mcp_facade": false
+  },
+  "theme": {
+    "primary": "#1e6c5a"
+  }
+}

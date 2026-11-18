@@ -1,0 +1,6 @@
+.DS_Store
+_internal/
+node_modules/
+*.log
+tmp/
+artifacts/raw/

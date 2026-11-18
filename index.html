@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agent Network Board — verifiable open agentic web operations</title>
+  <meta name="description" content="Discover published agent networks, inspect their real capabilities, delegate work through browser agents, and audit every cross-origin contact." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23144e42'/%3E%3Cpath d='M13 18h20a9 9 0 0 1 0 18H13zm18 18h20a8 8 0 0 1 0 16H31z' fill='none' stroke='%23f5f1e8' stroke-width='4'/%3E%3Ccircle cx='22' cy='27' r='3' fill='%23e6b85c'/%3E%3Ccircle cx='41' cy='44' r='3' fill='%23e6b85c'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="preconnect" href="https://api.openai.com" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="masthead">
+      <div class="brand-lockup">
+        <div class="brand-mark" aria-hidden="true">AN</div>
+        <div>
+          <p class="eyebrow">Open Agentic Web Challenge 2026–27</p>
+          <h1>Agent Network Board</h1>
+          <p class="tagline">Discover what agents claim. Delegate with consent. Prove what actually happened.</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a class="ghost-link" href="./agent-manifest.json" target="_blank" rel="noopener">manifest</a>
+        <a class="ghost-link" href="./agent_network_board.network.json" target="_blank" rel="noopener">network</a>
+        <a class="ghost-link" href="./links.json" target="_blank" rel="noopener">links</a>
+      </div>
+    </header>
+
+    <div class="mode-strip" id="mode-strip" role="status">
+      <span class="dot"></span>
+      <span id="mode-text">Starting browser runtime…</span>
+    </div>
+
+    <main class="board-grid">
+      <section class="panel discovery" aria-labelledby="discovery-title">
+        <div class="panel-head">
+          <div>
+            <p class="step">01 / DISCOVERY</p>
+            <h2 id="discovery-title">Read the real published artifacts</h2>
+          </div>
+          <span class="pill" id="discovery-status">idle</span>
+        </div>
+        <p class="panel-intro">Enter a published network URL. The browser fetches its manifest and resolved network definition; nothing here is hard-coded.</p>
+        <form id="discovery-form" class="inline-form">
+          <label class="sr-only" for="site-url">Agent network URL</label>
+          <input id="site-url" name="site-url" type="url" spellcheck="false" autocomplete="off"
+                 value="https://roshameow.github.io./agent-network-board-peer/receipt_notary" />
+          <button type="submit">Inspect real site</button>
+        </form>
+        <div id="discovery-result" class="result-stack" aria-live="polite">
+          <p class="empty-state">No site inspected yet.</p>
+        </div>
+      </section>
+
+      <section class="panel network" aria-labelledby="network-title">
+        <div class="panel-head">
+          <div>
+            <p class="step">02 / NETWORK BOARD</p>
+            <h2 id="network-title">Declared agents and real edges</h2>
+          </div>
+          <span class="pill" id="network-status">no network</span>
+        </div>
+        <p class="panel-intro">Cards come from the resolved <code>.network.json</code>. Edges are the declared <code>tools</code> references and published peer links.</p>
+        <div id="network-board" class="network-board" aria-live="polite">
+          <p class="empty-state">Inspect a site to populate the board.</p>
+        </div>
+      </section>
+
+      <section class="panel handoff" aria-labelledby="handoff-title">
+        <div class="panel-head">
+          <div>
+            <p class="step">03 / TASK HANDOFF</p>
+            <h2 id="handoff-title">Route work through the browser runtime</h2>
+          </div>
+          <span class="pill" id="run-status">ready</span>
+        </div>
+        <p class="panel-intro">The front agent calls internal specialists and, for cross-origin work, asks you to approve the exact origin before any contact.</p>
+        <form id="task-form" class="task-form">
+          <label for="task-input">Task</label>
+          <textarea id="task-input" rows="3">Inspect the receipt notary peer, prepare a handoff to verify a receipt digest, and audit this run.</textarea>
+          <div class="task-actions">
+            <button type="submit" class="primary">Run grounded turn</button>
+            <button type="button" id="reset-history" class="secondary">New conversation</button>
+          </div>
+        </form>
+        <div id="handoff-card" class="handoff-card" aria-live="polite">
+          <p class="empty-state">No handoff proposal yet.</p>
+        </div>
+        <details class="runtime-details" open>
+          <summary>Runtime conversation and agent trace</summary>
+          <div id="agent-app" class="agent-app">
+            <div data-ns-slot="header"></div>
+            <div class="assistant-panels">
+              <div data-ns-slot="chat"></div>
+              <div data-ns-slot="agents"></div>
+            </div>
+            <div data-ns-slot="settings"></div>
+          </div>
+        </details>
+      </section>
+
+      <section class="panel trust" aria-labelledby="trust-title">
+        <div class="panel-head">
+          <div>
+            <p class="step">04 / TRUST &amp; AUDIT</p>
+            <h2 id="trust-title">Evidence, not reputation theater</h2>
+          </div>
+          <span class="pill" id="trust-status">waiting</span>
+        </div>
+        <p class="panel-intro">Each check reports PASS, FAIL, or UNKNOWN with its source. UNKNOWN is never treated as a pass.</p>
+        <div id="evidence-list" class="evidence-list" aria-live="polite"></div>
+        <div class="audit-toolbar">
+          <button type="button" id="export-audit" class="secondary">Export audit JSON</button>
+          <button type="button" id="clear-audit" class="secondary danger">Clear local audit</button>
+        </div>
+        <ol id="audit-timeline" class="audit-timeline" aria-live="polite"></ol>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p>Independent project. Browser runtime: <a href="https://github.com/cognizant-ai-lab/nsdeploy" target="_blank" rel="noopener">nsDeploy reference runtime</a> (Apache-2.0), forked to expose read-only site actions as callable tools. Public artifacts and trace output contain no keys or private context.</p>
+    </footer>
+  </div>
+
+  <dialog id="consent-dialog" class="consent-dialog">
+    <form method="dialog">
+      <p class="step">CROSS-ORIGIN CONSENT</p>
+      <h3>Allow a third-party agent site?</h3>
+      <p id="consent-body"></p>
+      <pre id="consent-detail"></pre>
+      <menu>
+        <button value="decline" class="secondary">Decline</button>
+        <button value="allow" class="primary">Allow once</button>
+        <button value="always" class="secondary">Allow origin for this session</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <script type="module" src="./site.js"></script>
+</body>
+</html>
